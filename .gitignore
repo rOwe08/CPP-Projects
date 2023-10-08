@@ -11,3 +11,6 @@ Release
 x64
 *.user
 CMakeSettings.json
+*.sln
+*.vcxproj
+*.filters
