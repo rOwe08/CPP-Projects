@@ -10,6 +10,7 @@ std::string revert(std::string inputString)
     }
     return result;
 }
+
 void revertInPlace(std::string& inputString)
 {
     char tempSymbol;
