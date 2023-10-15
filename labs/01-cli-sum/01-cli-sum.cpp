@@ -1,3 +1,10 @@
+// Name of the file: 01-cli-sum.cpp 
+// Name of the programmer: Igor Minenko
+// Course: Programming in C++ NPRG041
+// 
+// Program's purpose:
+// Load the arguments from the command line and print their sum. Arguments are loaded as numbers.
+
 #include <iostream>
 #include <cstdlib>
 #include <string>

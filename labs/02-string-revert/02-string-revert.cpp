@@ -1,4 +1,19 @@
+// Name of the file: 02-string-revert.cpp 
+// Name of the programmer: Igor Minenko
+// Course: Programming in C++ NPRG041
+// 
+// Program's purpose:
+// Implementation the revert and revertInPlace functions for the code in main() function.
+
 #include <iostream>
+
+// Function name: revert
+// Return value: string 
+// Parameters: 
+//      string result: variable for containing a result string
+// 
+// Description: 
+// Reverts a given string not in place
 
 std::string revert(std::string inputString) 
 {
@@ -10,6 +25,15 @@ std::string revert(std::string inputString)
     }
     return result;
 }
+
+// Function name: revertInPlace
+// Return value: void 
+// Parameters: 
+//      string result: variable for containing a result string
+//      int i,j: variables for index containing
+// 
+// Description: 
+// Reverts a given string in place
 
 void revertInPlace(std::string& inputString)
 {

@@ -1,3 +1,15 @@
+// Name of the file: 02-sum.cpp 
+// Name of the programmer: Igor Minenko
+// Course: Programming in C++ NPRG041
+// 
+// Program's purpose:
+// Input: two arguments from the command line. (1-name of the input file, 2-name of the output file). 
+// If the first argument is '-' the program reads from standard input. If the second argument is '-', the program writes to the standard output.
+// The Program processes input line by line. On each line, the program adds up the value of the numbers and evaluates the expressions '+' and '-'.
+// Other characters are ignored by the program. The resulting value is then written to the output line.
+// The expression is a separation from both sides by a space, and does not contain a space itself and evaluated in the reading order.
+// If the input line, or does not contain a number, prints the program 0.
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -5,11 +17,25 @@
 
 int detectedMinus = 1;
 
+// Function name: getString
+// Return value: string 
+// 
+// Description: 
+// Makes from char value string value.
+
 std::string getString(char x)
 {
     std::string s(1, x);
     return s;
 }
+
+// Function name: getSum
+// Return value: int 
+// Parameters: 
+//      int sum: variable for containing a sum of numbers
+// 
+// Description: 
+// Counts and returns a sum of numbers in given string
 
 int getSum(std::string input)
 {
@@ -30,6 +56,12 @@ int getSum(std::string input)
 
     return sum;
 }
+
+// Function name: processSecondParameter
+// Return value: void
+// 
+// Description: 
+// Decides where the answer will be recorded.
 
 void processSecondParameter(int sum, std::string secondParameter)
 {
