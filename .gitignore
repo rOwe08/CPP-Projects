@@ -16,3 +16,4 @@ CMakeSettings.json
 *.filters
 *.exe
 *.txt
+*.csv
