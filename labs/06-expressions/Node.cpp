@@ -11,7 +11,6 @@ void Node::print_node() {};
 void BinaryNode::evaluate_node()
 {
     long tempResult = 0;
-
 }
 
 void BinaryNode::set_left(std::unique_ptr<Node> node)
@@ -36,7 +35,10 @@ Node* BinaryNode::get_right() const
 
 void BinaryNode::print_node()
 {
-    std::cout << element;
+    left->print_node();
+    std::cout << " " << element << " ";
+    right->print_node();
+    std::cout << std::endl;
 }
 
 void NumNode::evaluate_node()

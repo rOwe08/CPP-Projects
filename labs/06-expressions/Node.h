@@ -46,9 +46,6 @@ public:
 
     void evaluate_node() override;
     void print_node() override;
-
-    void set_center(std::unique_ptr<Node> node);
-    Node* get_center() const;
 };
 
 class Expression; 

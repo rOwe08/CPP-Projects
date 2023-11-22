@@ -1,9 +1,9 @@
-#include "Node.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <memory>
 
+#include "Node.h"
 #include "EvaluationManager.h"
 #include "Expression.h"
 
@@ -24,20 +24,14 @@ void evaluate_expression(std::vector<std::string> elements, std::vector<Expressi
 
 	if (!expressionPtr)
 	{
-		Expression newExpression;
-		newExpression.variable = name;
-
-		expressions.push_back(newExpression);
+		expressions.emplace_back();
+		expressions.back().variable = name;
 		expressionPtr = &expressions.back();
 	}
 
-	std::unique_ptr<Node> root(expressionPtr->create_tree(elements));
-
-	std::string result = expressionPtr->evaluate_tree(root.get());
-
 	if (command == "set")
 	{
-		expressionPtr->set_expression();
+		expressionPtr->set_expression(elements);
 	}
 	else if (command == "unset")
 	{

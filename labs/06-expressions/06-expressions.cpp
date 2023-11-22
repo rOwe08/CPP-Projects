@@ -10,12 +10,17 @@
 
 int main()
 {
-    std::vector<std::string> elements = create_array();
     std::vector<Expression> expressions;
 
-    if (!elements.empty())
+    while (true)
     {
-        std::string command = elements[0];
+        std::vector<std::string> elements = create_array();
+
+        if (elements.empty() || elements[0] == "quit")
+        {
+            break;
+        }
+
         evaluate_expression(elements, expressions);
     }
 

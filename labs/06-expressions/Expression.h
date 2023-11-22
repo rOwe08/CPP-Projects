@@ -13,19 +13,14 @@ class Expression
 {
 public:
     int result;
-    std::vector<std::string> operationSymbol;
+    std::string operationSymbol;
     std::string variable;
-    Node* expressionNode;
-
-    std::unique_ptr<Node> create_node(const std::string& element);
-    std::pair<std::unique_ptr<Node>, int> insert_node(const std::vector<std::string>& elements, int index);
-    std::unique_ptr<Node> create_tree(const std::vector<std::string>& elements);
-    std::string evaluate_tree(const Node* node);
+    std::unique_ptr<Node> expressionNode;
 
     void evaluate();
     void print_result();
     void print_expression();
-    void set_expression();
+    void set_expression(const std::vector<std::string>& elements);
     void unset_expression();
     void copy_expression();
     void rename_expression(std::string renameValue);
