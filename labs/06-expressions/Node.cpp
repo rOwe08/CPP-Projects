@@ -2,6 +2,7 @@
 #include "Expression.h"
 #include <iostream>
 #include <memory>
+#include "EvaluationManager.h"
 
 void Node::evaluate_node() {};
 
@@ -10,7 +11,25 @@ void Node::print_node() {};
 
 void BinaryNode::evaluate_node()
 {
-    long tempResult = 0;
+    left->evaluate_node();
+    right->evaluate_node();
+
+    if (element == "*")
+    {
+        result = left->result * right->result;
+    }
+    else if (element == "+")
+    {
+        result = left->result + right->result;
+    }
+    else if (element == "-")
+    {
+        result = left->result - right->result;
+    }
+    else if (element == "/")
+    {
+        result = left->result / right->result;
+    }
 }
 
 void BinaryNode::set_left(std::unique_ptr<Node> node)
@@ -38,13 +57,11 @@ void BinaryNode::print_node()
     left->print_node();
     std::cout << " " << element << " ";
     right->print_node();
-    std::cout << std::endl;
 }
 
 void NumNode::evaluate_node()
 {
-    std::string result = result;
-    long number = std::atol(result.c_str());
+    result = std::stoi(element);
 }
 
 void NumNode::print_node()
@@ -52,12 +69,21 @@ void NumNode::print_node()
     std::cout << element;
 }
 
-void ExpressionNode::evaluate_node()
-{   
-    expression->evaluate();
+void UnaryNode::evaluate_node()
+{
+    Expression* foundExp = EvaluationManager::find_expression(element);
+    if (foundExp)
+    {
+        foundExp->evaluate();
+        result = foundExp->result;
+    }
+    else
+    {
+        // Handle the case where no matching expression is found
+    }
 }
 
-void ExpressionNode::print_node()
+void UnaryNode::print_node()
 {
-    expression->print_result();
+    std::cout << element;
 }

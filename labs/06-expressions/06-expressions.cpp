@@ -10,7 +10,10 @@
 
 int main()
 {
-    std::vector<Expression> expressions;
+    auto expressions = std::make_shared<std::vector<Expression>>();
+    EvaluationManager evaluationManager;
+
+    evaluationManager.set_expressionsPtr(expressions);
 
     while (true)
     {
@@ -21,7 +24,7 @@ int main()
             break;
         }
 
-        evaluate_expression(elements, expressions);
+        evaluationManager.evaluate_expression(elements);
     }
 
     return 0;

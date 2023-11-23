@@ -7,13 +7,15 @@
 #include "EvaluationManager.h"
 #include "Expression.h"
 
-void evaluate_expression(std::vector<std::string> elements, std::vector<Expression>& expressions)
+std::shared_ptr<std::vector<Expression>> EvaluationManager::expressionsPtr = std::make_shared<std::vector<Expression>>();
+
+void EvaluationManager::evaluate_expression(std::vector<std::string> elements)
 {
 	std::string command = elements[0];
 	std::string name = elements[1];
 	Expression* expressionPtr = nullptr;
 
-	for (Expression& tempExp : expressions)
+	for (Expression& tempExp : *expressionsPtr)
 	{
 		if (tempExp.variable == name)
 		{
@@ -24,9 +26,10 @@ void evaluate_expression(std::vector<std::string> elements, std::vector<Expressi
 
 	if (!expressionPtr)
 	{
-		expressions.emplace_back();
-		expressions.back().variable = name;
-		expressionPtr = &expressions.back();
+		expressionsPtr->emplace_back();
+		expressionsPtr->back().variable = name;
+
+		expressionPtr = &expressionsPtr->back();
 	}
 
 	if (command == "set")
@@ -45,6 +48,7 @@ void evaluate_expression(std::vector<std::string> elements, std::vector<Expressi
 	else if (command == "print")
 	{
 		expressionPtr->print_expression();
+		std::cout << std::endl;
 	}
 	else if (command == "copy")
 	{
@@ -55,4 +59,24 @@ void evaluate_expression(std::vector<std::string> elements, std::vector<Expressi
 		std::string renameValue = elements[2];
 		expressionPtr->rename_expression(renameValue);
 	}
+}
+
+Expression* EvaluationManager::find_expression(const std::string& name)
+{
+	if (expressionsPtr)
+	{
+		for (auto& exp : *expressionsPtr)
+		{
+			if (exp.variable == name)
+			{
+				return &exp;
+			}
+		}
+	}
+	return nullptr;
+}
+
+void EvaluationManager::set_expressionsPtr(std::shared_ptr<std::vector<Expression>> expressionsPtrTemp)
+{
+	expressionsPtr = expressionsPtrTemp;
 }

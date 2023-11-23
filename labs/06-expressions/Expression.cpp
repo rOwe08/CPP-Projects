@@ -8,23 +8,8 @@
 
 void Expression::evaluate()
 {
-    //if (elements[3] == "*")
-    //{
-
-    //}
-    //else if (elements[3] == "/")
-    //{
-
-    //}
-    //else if (elements[3] == "-")
-    //{
-
-    //}
-    //else if (elements[3] == "+")
-    //{
-
-    //}
-    std::cout << std::to_string(4) << std::endl;
+    expressionNode->evaluate_node();
+    result = expressionNode->result;
 }
 
 void Expression::print_result()
@@ -37,9 +22,9 @@ void Expression::print_expression()
     expressionNode->print_node();
 }
 
-void Expression::set_expression(const std::vector<std::string>& elements)
+void Expression::set_expression(std::vector<std::string>& elements)
 {
-    if (elements.size() > 3)
+    if (elements.size() > 4)
     {
         operationSymbol = elements[3];
         auto root = std::make_unique<BinaryNode>(operationSymbol);
@@ -51,9 +36,9 @@ void Expression::set_expression(const std::vector<std::string>& elements)
         }
         catch (...)
         {
-            root->set_left(std::make_unique<ExpressionNode>(elements[4]));
+            root->set_left(std::make_unique<UnaryNode>(elements[4]));
         }
-
+        
         try
         {
             std::stoi(elements[5]);
@@ -61,25 +46,16 @@ void Expression::set_expression(const std::vector<std::string>& elements)
         }
         catch (...)
         {
-            root->set_right(std::make_unique<ExpressionNode>(elements[5]));
+            root->set_right(std::make_unique<UnaryNode>(elements[5]));
         }
+        
 
         expressionNode = std::move(root);
     }
     else
     {
-        try
-        {
-            int num = std::stoi(elements[3]);
-
-            auto root = std::make_unique<NumNode>(elements[3]);
-            expressionNode = std::move(root);
-        }
-        catch (...)
-        {
-            auto root = std::make_unique<ExpressionNode>(operationSymbol);
-            expressionNode = std::move(root);
-        }
+        auto root = std::make_unique<NumNode>(elements[3]);
+        expressionNode = std::move(root);
     }
 }
 

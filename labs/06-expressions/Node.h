@@ -11,6 +11,7 @@ class Node
 {
 public:
     std::string element;
+    int result;
 
     Node(const std::string& elem) : element(elem) {}
 
@@ -48,13 +49,10 @@ public:
     void print_node() override;
 };
 
-class Expression; 
-
-class ExpressionNode : public Node
+class UnaryNode : public Node
 {
 public:
-    Expression* expression;
-    ExpressionNode(const std::string& elem) : Node(elem) {}
+    UnaryNode(const std::string& elem) : Node(elem) {}
 
     void evaluate_node() override;
     void print_node() override;

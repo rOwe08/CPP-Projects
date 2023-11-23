@@ -4,8 +4,18 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 #include "Expression.h"
 
-void evaluate_expression(std::vector<std::string> elements, std::vector<Expression>& expressions);
+class EvaluationManager
+{
+public:
+    static std::shared_ptr<std::vector<Expression>> expressionsPtr;
+
+    void evaluate_expression(std::vector<std::string> elements);
+    void set_expressionsPtr(std::shared_ptr<std::vector<Expression>> expressionsPtrTemp);
+
+    static Expression* find_expression(const std::string& name);
+};
 
 #endif
