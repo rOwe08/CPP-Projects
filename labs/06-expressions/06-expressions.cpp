@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <memory> 
+#include <map>
 
 #include "InputHandler.h"
 #include "EvaluationManager.h"
@@ -10,10 +11,7 @@
 
 int main()
 {
-    auto expressions = std::make_shared<std::vector<Expression>>();
     EvaluationManager evaluationManager;
-
-    evaluationManager.set_expressionsPtr(expressions);
 
     while (true)
     {

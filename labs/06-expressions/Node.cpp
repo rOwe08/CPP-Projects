@@ -8,82 +8,76 @@ void Node::evaluate_node() {};
 
 void Node::print_node() {};
 
+void Node::print_nodeElement() 
+{
+    std::cout << element;
+}
 
 void BinaryNode::evaluate_node()
 {
     left->evaluate_node();
     right->evaluate_node();
-
-    if (element == "*")
-    {
-        result = left->result * right->result;
-    }
-    else if (element == "+")
-    {
-        result = left->result + right->result;
-    }
-    else if (element == "-")
-    {
-        result = left->result - right->result;
-    }
-    else if (element == "/")
-    {
-        result = left->result / right->result;
-    }
 }
 
-void BinaryNode::set_left(std::unique_ptr<Node> node)
+void AdditionNode::evaluate_node()
 {
-    left = std::move(node);
+    left->evaluate_node();
+    right->evaluate_node();
+    result = left->result + right->result;
 }
 
-void BinaryNode::set_right(std::unique_ptr<Node> node)
+void MultiplicationNode::evaluate_node()
 {
-    right = std::move(node);
+    left->evaluate_node();
+    right->evaluate_node();
+    result = left->result * right->result;
 }
 
-Node* BinaryNode::get_left() const
+void DivisionNode::evaluate_node()
 {
-    return left.get();
+    left->evaluate_node();
+    right->evaluate_node();
+    result = left->result / right->result;
 }
 
-Node* BinaryNode::get_right() const
+void SubtractionNode::evaluate_node()
 {
-    return right.get();
-}
-
-void BinaryNode::print_node()
-{
-    left->print_node();
-    std::cout << " " << element << " ";
-    right->print_node();
-}
-
-void NumNode::evaluate_node()
-{
-    result = std::stoi(element);
-}
-
-void NumNode::print_node()
-{
-    std::cout << element;
+    left->evaluate_node();
+    right->evaluate_node();
+    result = left->result - right->result;
 }
 
 void UnaryNode::evaluate_node()
 {
-    Expression* foundExp = EvaluationManager::find_expression(element);
-    if (foundExp)
-    {
-        foundExp->evaluate();
-        result = foundExp->result;
-    }
-    else
-    {
-        // Handle the case where no matching expression is found
-    }
+    child->evaluate_node();
+    result = child->result;
+}
+
+void ConstNode::evaluate_node()
+{
+    result = std::stoi(element);
+}
+
+void BinaryNode::print_node()
+{
+    left->print_nodeElement();
+
+    std::cout << " " << element << " ";
+
+    right->print_nodeElement();
+
+    //std::cout << left->element << ": " << left << std::endl;
+
+    //std::cout << right->element << ": " << right << std::endl;
 }
 
 void UnaryNode::print_node()
 {
+    child->print_node();
+}
+
+void ConstNode::print_node()
+{
     std::cout << element;
 }
+
