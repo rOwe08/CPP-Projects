@@ -1,3 +1,10 @@
+// Name of the file: 06-expressions.cpp 
+// Name of the programmer: Igor Minenko
+// Course: Programming in C++ NPRG041
+// 
+// Program's purpose:
+// Implementation an expression management application.
+
 #include <iostream>
 #include <sstream>
 #include <vector>
