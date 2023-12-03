@@ -22,17 +22,10 @@ void Expression::evaluate()
         auto renameValueWithoutNamespace = EvaluationManager::getNameValue(expressionNodePtr->element);
 
         auto expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(renameValueWithoutNamespace, namespaceTemp);
-        
-        if (expressionPtr)
-        {
-            expressionPtr->expressionNodePtr->evaluate_node();
 
-            result = expressionPtr->expressionNodePtr->result;
-        }
-        else
-        {
-            std::cout << "NO EXPRESSION FOUND" << std::endl;
-        }
+        expressionPtr->expressionNodePtr->evaluate_node();
+
+        result = expressionPtr->expressionNodePtr->result;
     }
     else
     {

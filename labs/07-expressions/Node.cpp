@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include "EvaluationManager.h"
+#include "Exceptions.h"
 
 void Node::evaluate_node() {};
 
@@ -54,7 +55,7 @@ void MultiplicationNode::evaluate_node()
         }
         else
         {
-            std::cout << "NO EXPRESSION FOUND" << std::endl;
+            throw NonSpecificException();
         }
     }
     else
@@ -84,7 +85,7 @@ void MultiplicationNode::evaluate_node()
         }
         else
         {
-            std::cout << "NO EXPRESSION FOUND" << std::endl;
+            throw NonSpecificException();
         }
     }
     else

@@ -15,7 +15,6 @@
 #include "InputHandler.h"
 #include "EvaluationManager.h"
 #include "Expression.h"
-#include "Exceptions.h"
 
 int main()
 {
@@ -27,19 +26,13 @@ int main()
         {
             std::vector<std::string> elements = create_array();
 
-            if (elements.empty() || elements[0] == "quit")
+            if (elements[0] == "quit")
             {
                 break;
             }
-
-            if (elements.size() < 2)
-            {
-                throw NonSpecificException();
-            }
-
             evaluationManager.evaluate_expression(elements);
         }
-        catch (CustomException& e)
+        catch (std::runtime_error& e)
         {
             std::cout << e.what() << std::endl;
         }

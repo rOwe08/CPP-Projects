@@ -25,11 +25,4 @@ public:
         : CustomException("Namespace '" + ns + "' does not exist!"){}
 };
 
-class ExpressionNotFoundException : public CustomException
-{
-public:
-    explicit ExpressionNotFoundException(const std::string& expName)
-        : CustomException("Expression '" + expName + "' does not exist!"){}
-};
-
 #endif
