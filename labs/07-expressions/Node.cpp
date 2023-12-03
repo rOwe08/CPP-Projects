@@ -28,14 +28,69 @@ void AdditionNode::evaluate_node()
 
 void MultiplicationNode::evaluate_node()
 {
-    std::cout << left->element << ": " << left << std::endl;
+    //std::cout << left->element << ": " << left << std::endl;
 
-    std::cout << right->element << ": " << right << std::endl;
+    //std::cout << right->element << ": " << right << std::endl;
 
+    std::string possibleNamespace = EvaluationManager::find_namespace_in_text(left->element);
+    std::shared_ptr<Namespace> namespaceTemp = nullptr;
 
-    left->evaluate_node();
-    right->evaluate_node();
+    if (possibleNamespace != "")
+    {
+        namespaceTemp = EvaluationManager::find_namespace(possibleNamespace);
+    }
 
+    if (namespaceTemp)
+    {
+        auto renameValueWithoutNamespace = EvaluationManager::getNameValue(left->element);
+
+        auto expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(renameValueWithoutNamespace, namespaceTemp);
+
+        if (expressionPtr)
+        {
+            expressionPtr->expressionNodePtr->evaluate_node();
+
+            left->result = expressionPtr->expressionNodePtr->result;
+        }
+        else
+        {
+            std::cout << "NO EXPRESSION FOUND" << std::endl;
+        }
+    }
+    else
+    {
+        left->evaluate_node();
+    }
+
+    possibleNamespace = EvaluationManager::find_namespace_in_text(right->element);
+    namespaceTemp = nullptr;
+
+    if (possibleNamespace != "")
+    {
+        namespaceTemp = EvaluationManager::find_namespace(possibleNamespace);
+    }
+
+    if (namespaceTemp)
+    {
+        auto renameValueWithoutNamespace = EvaluationManager::getNameValue(right->element);
+
+        auto expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(renameValueWithoutNamespace, namespaceTemp);
+
+        if (expressionPtr)
+        {
+            expressionPtr->expressionNodePtr->evaluate_node();
+
+            right->result = expressionPtr->expressionNodePtr->result;
+        }
+        else
+        {
+            std::cout << "NO EXPRESSION FOUND" << std::endl;
+        }
+    }
+    else
+    {
+        right->evaluate_node();
+    }
     result = left->result * right->result;
 }
 
@@ -73,9 +128,9 @@ void BinaryNode::print_node()
 
     right->print_nodeElement();
 
-    std::cout << left->element << ": " << left << std::endl;
+    //std::cout << left->element << ": " << left << std::endl;
 
-    std::cout << right->element << ": " << right << std::endl;
+    //std::cout << right->element << ": " << right << std::endl;
 }
 
 void UnaryNode::print_node()

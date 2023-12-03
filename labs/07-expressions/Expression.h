@@ -14,7 +14,6 @@ class Expression
 {
 public:
     int result = 0;
-    std::string operationSymbol = "";
     std::string variable = "";
     std::shared_ptr<UnaryNode> expressionNodePtr = nullptr;
 

@@ -31,10 +31,12 @@ public:
     void use_namespace(std::string& name);
     void list_namespaces();
 
-    static std::shared_ptr<Expression> find_expression_in_namespace(const std::string& name, std::shared_ptr<Namespace> namespacePtr);
+    static std::shared_ptr<Expression> find_expression_or_create_in_namespace(const std::string& name, std::shared_ptr<Namespace> namespacePtr);
     static std::string find_namespace_in_text(std::string name);
     static std::shared_ptr<Expression> find_expression(const std::string& name, std::shared_ptr<Namespace> namespacePtr);
     static std::string getNameValue(const std::string& fullName);
+    static std::shared_ptr<Expression> find_ptr(const std::string& name);
+    static std::shared_ptr<Expression> find_ptr_for_set(const std::string& name);
 };
 
 #endif

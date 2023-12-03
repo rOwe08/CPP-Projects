@@ -15,6 +15,7 @@
 #include "InputHandler.h"
 #include "EvaluationManager.h"
 #include "Expression.h"
+#include "Exceptions.h"
 
 int main()
 {
@@ -22,15 +23,27 @@ int main()
 
     while (true)
     {
-        std::vector<std::string> elements = create_array();
-
-        if (elements.empty() || elements[0] == "quit")
+        try
         {
-            break;
-        }
+            std::vector<std::string> elements = create_array();
 
-        evaluationManager.evaluate_expression(elements);
+            if (elements[0] == "quit")
+            {
+                break;
+            }
+            else if (elements.size() < 2)
+            {
+                throw NonSpecificException();
+            }
+
+            evaluationManager.evaluate_expression(elements);
+        }
+        catch (const CustomException& e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
 
     return 0;
 }
+

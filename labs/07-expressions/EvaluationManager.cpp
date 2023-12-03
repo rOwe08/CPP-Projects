@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <memory>
@@ -7,6 +8,7 @@
 #include "Node.h"
 #include "EvaluationManager.h"
 #include "Expression.h"
+#include "Exceptions.h"
 #include "Namespace.h"
 
 std::vector<std::shared_ptr<Namespace>> EvaluationManager::namespacesPtrVector;
@@ -14,48 +16,49 @@ std::shared_ptr<Namespace> EvaluationManager::currentNamespacePtr;
 
 void EvaluationManager::evaluate_expression(std::vector<std::string> elements)
 {
-	if (elements[0] == "namespace")
+	std::string command = elements[0];
+	std::string name = elements[1];
+
+	try
 	{
-		if (elements[1] == "list")
+		if (command == "namespace")
 		{
-			EvaluationManager::list_namespaces();
+			if (elements[1] == "list")
+			{
+				EvaluationManager::list_namespaces();
+			}
+			else if (elements[1] == "create")
+			{
+				EvaluationManager::create_namespace(elements[2]);
+			}
+			else if (elements[1] == "use")
+			{
+				EvaluationManager::use_namespace(elements[2]);
+			}
 		}
-		else if (elements[1] == "create")
+		else if (command == "set")
 		{
-			EvaluationManager::create_namespace(elements[2]);
-		}
-		else if (elements[1] == "use")
-		{
-			EvaluationManager::use_namespace(elements[2]);
-		}
-	}
-	else
-	{
-		std::string command = elements[0];
-		std::string name = elements[1];
+			if (elements[2] != "=")
+			{
+				throw NonSpecificException();
+			}
 
-		std::shared_ptr<Expression> expressionPtr = nullptr;
+			std::string possibleNamespace = find_namespace_in_text(name);
+			std::shared_ptr<Namespace> namespaceTemp = nullptr;
 
-		std::string possibleNamespace = find_namespace_in_text(name);
+			if (possibleNamespace != "")
+			{
+				namespaceTemp = find_namespace(possibleNamespace);
+			}
 
-		auto namespaceTemp = find_namespace(possibleNamespace);                 ////// if is null!!!!!!!!!!!???????????
+			auto expressionPtr = find_ptr_for_set(name);
 
-		if (namespaceTemp)
-		{
-			name = EvaluationManager::getNameValue(name);
-			expressionPtr = find_expression_in_namespace(name, namespaceTemp);
-		}
-		else
-		{
-			expressionPtr = find_expression_in_namespace(name, EvaluationManager::currentNamespacePtr);
-		}
-
-		if (command == "set")
-		{
 			expressionPtr->set_expression(elements, namespaceTemp);
 		}
 		else if (command == "unset")
 		{
+			auto expressionPtr = find_ptr(name);
+
 			auto it = std::find_if(EvaluationManager::currentNamespacePtr->expressionsVector.begin(), EvaluationManager::currentNamespacePtr->expressionsVector.end(),
 				[&expressionPtr](const std::shared_ptr<Expression>& e)
 				{
@@ -69,27 +72,38 @@ void EvaluationManager::evaluate_expression(std::vector<std::string> elements)
 		}
 		else if (command == "evaluate")
 		{
+			auto expressionPtr = find_ptr(name);
+
 			expressionPtr->evaluate();
 			expressionPtr->print_result();
 		}
 		else if (command == "print")
 		{
+			auto expressionPtr = find_ptr(name);
+
 			expressionPtr->print_expression();
 			std::cout << std::endl;
 		}
 		else if (command == "copy")
 		{
+			auto expressionPtr = find_ptr(name);
 			expressionPtr->copy_expression(elements[2]);
 		}
 		else if (command == "rename")
 		{
+			auto expressionPtr = find_ptr(name);
+
 			std::string renameValue = elements[2];
 			expressionPtr->rename_expression(renameValue);
 		}
 		else
 		{
-			std::cout << "Invalid command";
+			throw NonSpecificException();
 		}
+	}
+	catch (const CustomException& e)
+	{
+		std::cout << e.what() << std::endl;
 	}
 }
 
@@ -105,7 +119,7 @@ std::shared_ptr<Expression> EvaluationManager::find_expression(const std::string
 	return nullptr;
 }
 
-std::shared_ptr<Expression> EvaluationManager::find_expression_in_namespace(const std::string& name, std::shared_ptr<Namespace> namespacePtr)
+std::shared_ptr<Expression> EvaluationManager::find_expression_or_create_in_namespace(const std::string& name, std::shared_ptr<Namespace> namespacePtr)
 {
 	auto expressionPtr = find_expression(name, namespacePtr);
 
@@ -131,42 +145,31 @@ std::shared_ptr<Namespace> EvaluationManager::find_namespace(const std::string& 
 			return nmspc;
 		}
 	}
-	return nullptr;
+	throw NonSpecificException();
 }
 
 void EvaluationManager::create_namespace(std::string& name)
 {
-	auto namespaceTemp = find_namespace(name);
+	auto namespacePtr = std::make_shared<Namespace>();
+	namespacePtr->name = name;
 
-	if (!namespaceTemp)
-	{
-		auto namespacePtr = std::make_shared<Namespace>();
-		namespacePtr->name = name;
-
-		namespacesPtrVector.push_back(namespacePtr);
-	}
-	else
-	{
-		// case where the namespace already exists
-	}
+	namespacesPtrVector.push_back(namespacePtr);
 }
 
 void EvaluationManager::use_namespace(std::string& name)
 {
 	auto namespaceTemp = find_namespace(name);
 
-	if (namespaceTemp)
-	{
-		currentNamespacePtr = namespaceTemp;
-	}
-	else
-	{
-		throw std::runtime_error("Namespace '" + name + "' does not exist!");
-	}
+	currentNamespacePtr = namespaceTemp;
 }
 
 void EvaluationManager::list_namespaces()
 {
+	std::sort(namespacesPtrVector.begin(), namespacesPtrVector.end(),
+		[](const std::shared_ptr<Namespace>& a, const std::shared_ptr<Namespace>& b)
+		{
+			return a->name < b->name;
+		});
 	for (const auto& ns : namespacesPtrVector)
 	{
 		std::cout << ns->name << std::endl;
@@ -175,7 +178,7 @@ void EvaluationManager::list_namespaces()
 
 std::string EvaluationManager::find_namespace_in_text(std::string name)
 {
-	std::string possibleNamespace;
+	std::string possibleNamespace = "";
 
 	std::size_t pos = name.find('.');
 	if (pos != std::string::npos)
@@ -196,4 +199,63 @@ std::string EvaluationManager::getNameValue(const std::string& fullName)
 	{
 		return fullName;
 	}
+}
+
+std::shared_ptr<Expression> EvaluationManager::find_ptr(const std::string& name)
+{
+	std::string possibleNamespace = find_namespace_in_text(name);
+	std::shared_ptr<Namespace> namespaceTemp = nullptr;
+
+	if (possibleNamespace != "")
+	{
+		namespaceTemp = find_namespace(possibleNamespace);
+	}
+
+	std::shared_ptr<Expression> expressionPtr;
+
+	if (namespaceTemp)
+	{
+		auto tempName = EvaluationManager::getNameValue(name);
+		expressionPtr = EvaluationManager::find_expression(tempName, namespaceTemp);
+	}
+	else
+	{
+		expressionPtr = EvaluationManager::find_expression(name, EvaluationManager::currentNamespacePtr);
+	}
+
+	if (!expressionPtr)
+	{
+		throw NonSpecificException();
+	}
+
+	return expressionPtr;
+}
+
+std::shared_ptr<Expression> EvaluationManager::find_ptr_for_set(const std::string& name)
+{
+	std::string possibleNamespace = find_namespace_in_text(name);
+	std::shared_ptr<Expression> expressionPtr;
+	std::shared_ptr<Namespace> namespaceTemp = nullptr;
+
+	if (possibleNamespace != "")
+	{
+		namespaceTemp = find_namespace(possibleNamespace);
+	}
+
+	if (namespaceTemp)
+	{
+		auto tempName = EvaluationManager::getNameValue(name);
+		expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(tempName, namespaceTemp);
+	}
+	else
+	{
+		expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(name, EvaluationManager::currentNamespacePtr);
+	}
+
+	if (!expressionPtr)
+	{
+		throw NonSpecificException();
+	}
+
+	return expressionPtr;
 }

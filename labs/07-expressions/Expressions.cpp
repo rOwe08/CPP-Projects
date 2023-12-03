@@ -9,8 +9,37 @@
 
 void Expression::evaluate()
 {
-    expressionNodePtr->evaluate_node();
-    result = expressionNodePtr->result;
+    std::string possibleNamespace = EvaluationManager::find_namespace_in_text(expressionNodePtr->element);
+    std::shared_ptr<Namespace> namespaceTemp = nullptr;
+
+    if (possibleNamespace != "")
+    {
+        namespaceTemp = EvaluationManager::find_namespace(possibleNamespace);
+    }
+
+    if (namespaceTemp)
+    {
+        auto renameValueWithoutNamespace = EvaluationManager::getNameValue(expressionNodePtr->element);
+
+        auto expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(renameValueWithoutNamespace, namespaceTemp);
+        
+        if (expressionPtr)
+        {
+            expressionPtr->expressionNodePtr->evaluate_node();
+
+            result = expressionPtr->expressionNodePtr->result;
+        }
+        else
+        {
+            std::cout << "NO EXPRESSION FOUND" << std::endl;
+        }
+    }
+    else
+    {
+        expressionNodePtr->evaluate_node();
+        result = expressionNodePtr->result;
+    }
+
 }
 
 void Expression::print_result()
@@ -78,73 +107,26 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
         {
             child = std::make_shared<MultiplicationNode>(symbol);
         }
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         try
         {
             int value = std::stoi(elements[4]);
-            child->left = std::make_shared<ConstNode>(elements[4]);
+            child->left = std::make_shared<ConstNode>(std::to_string(value));
         }
         catch (...)
         {
-            std::shared_ptr<Expression> expressionPtr = nullptr;
-
-            std::string possibleNamespace = EvaluationManager::find_namespace_in_text(elements[4]);
-
-            auto namespaceTemp = EvaluationManager::find_namespace(possibleNamespace);                 ////// if is null!!!!!!!!!!!???????????
-
-            if (namespaceTemp)
-            {
-                expressionPtr = EvaluationManager::find_expression_in_namespace(elements[4], namespaceTemp);
-            }
-            else
-            {
-                expressionPtr = EvaluationManager::find_expression_in_namespace(elements[4], EvaluationManager::currentNamespacePtr);
-            }
-
-            if (!expressionPtr)
-            {
-                expressionPtr = std::make_shared<Expression>();
-                expressionPtr->variable = elements[4];
-
-                expressionPtr->expressionNodePtr = std::make_shared<UnaryNode>(elements[4]);
-                EvaluationManager::currentNamespacePtr->expressionsVector.push_back(expressionPtr);
-            }
-
+            std::shared_ptr<Expression> expressionPtr = EvaluationManager::find_ptr_for_set(elements[4]);
             child->left = expressionPtr->expressionNodePtr;
         }
 
         try
         {
             int value = std::stoi(elements[5]);
-            child->right = std::make_shared<ConstNode>(elements[5]);
+            child->right = std::make_shared<ConstNode>(std::to_string(value));
         }
         catch (...)
         {
-
-            std::shared_ptr<Expression> expressionPtr = nullptr;
-
-            std::string possibleNamespace = EvaluationManager::find_namespace_in_text(elements[5]);
-
-            auto namespaceTemp = EvaluationManager::find_namespace(possibleNamespace);                 ////// if is null!!!!!!!!!!!???????????
-
-            if (namespaceTemp)
-            {
-                expressionPtr = EvaluationManager::find_expression_in_namespace(elements[5], namespaceTemp);
-            }
-            else
-            {
-                expressionPtr = EvaluationManager::find_expression_in_namespace(elements[5], EvaluationManager::currentNamespacePtr);
-            }
-
-            if (!expressionPtr)
-            {
-                expressionPtr = std::make_shared<Expression>();
-                expressionPtr->variable = elements[5];
-
-                expressionPtr->expressionNodePtr = std::make_shared<UnaryNode>(elements[5]);
-                EvaluationManager::currentNamespacePtr->expressionsVector.push_back(expressionPtr);
-            }
-
+            std::shared_ptr<Expression> expressionPtr = EvaluationManager::find_ptr_for_set(elements[5]);
             child->right = expressionPtr->expressionNodePtr;
         }
 
@@ -152,9 +134,8 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
 
         expressionNodePtr = root;
 
-        std::cout << child->left->element << ": " << child->left << std::endl;
-
-        std::cout << child->right->element << ": " << child->right << std::endl;
+        //std::cout << child->left->element << ": " << child->left << std::endl;
+        //std::cout << child->right->element << ": " << child->right << std::endl;
     }
     else
     {
@@ -163,7 +144,7 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
         try
         {
             int value = std::stoi(symbol);
-            child = std::make_shared<ConstNode>(symbol);
+            child = std::make_shared<ConstNode>(std::to_string(value));
         }
         catch (...)
         {
@@ -173,7 +154,7 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
         root->child = child;
 
         expressionNodePtr = root;
-        std::cout << root->element << ": " << root << std::endl;
+        //std::cout << root->element << ": " << root << std::endl;
     }
 
 }
@@ -190,24 +171,6 @@ void Expression::copy_expression(std::string& targetName)
 
 void Expression::rename_expression(std::string renameValue)
 {
-    std::shared_ptr<Expression> expressionPtr = nullptr;
-
-    std::string possibleNamespace = EvaluationManager::find_namespace_in_text(renameValue);
-
-    auto namespaceTemp = EvaluationManager::find_namespace(possibleNamespace);                 ////// if is null!!!!!!!!!!!???????????
-
-    std::cout << "Before: " << expressionNodePtr->element << ": " << expressionNodePtr << std::endl;
-
-    if (namespaceTemp)
-    {
-        auto renameValueWithoutNamespace = EvaluationManager::getNameValue(renameValue);
-
-        expressionPtr = EvaluationManager::find_expression_in_namespace(renameValueWithoutNamespace, namespaceTemp);
-        expressionNodePtr = expressionPtr->expressionNodePtr;
-    }
-
     variable = renameValue;
     expressionNodePtr->element = renameValue;
-
-    std::cout << "After: " << expressionNodePtr->element << ": " << expressionNodePtr << std::endl;
 }
