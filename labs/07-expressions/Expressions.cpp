@@ -22,17 +22,10 @@ void Expression::evaluate()
         auto renameValueWithoutNamespace = EvaluationManager::getNameValue(expressionNodePtr->element);
 
         auto expressionPtr = EvaluationManager::find_expression_or_create_in_namespace(renameValueWithoutNamespace, namespaceTemp);
-        
-        if (expressionPtr)
-        {
-            expressionPtr->expressionNodePtr->evaluate_node();
 
-            result = expressionPtr->expressionNodePtr->result;
-        }
-        else
-        {
-            std::cout << "NO EXPRESSION FOUND" << std::endl;
-        }
+        expressionPtr->expressionNodePtr->evaluate_node();
+
+        result = expressionPtr->expressionNodePtr->result;
     }
     else
     {
@@ -113,7 +106,7 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
             int value = std::stoi(elements[4]);
             child->left = std::make_shared<ConstNode>(std::to_string(value));
         }
-        catch (...)
+        catch (const std::invalid_argument&)
         {
             std::shared_ptr<Expression> expressionPtr = EvaluationManager::find_ptr_for_set(elements[4]);
             child->left = expressionPtr->expressionNodePtr;
@@ -124,7 +117,7 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
             int value = std::stoi(elements[5]);
             child->right = std::make_shared<ConstNode>(std::to_string(value));
         }
-        catch (...)
+        catch (const std::invalid_argument&)
         {
             std::shared_ptr<Expression> expressionPtr = EvaluationManager::find_ptr_for_set(elements[5]);
             child->right = expressionPtr->expressionNodePtr;
@@ -146,7 +139,7 @@ void Expression::set_expression(std::vector<std::string>& elements, std::shared_
             int value = std::stoi(symbol);
             child = std::make_shared<ConstNode>(std::to_string(value));
         }
-        catch (...)
+        catch (const std::invalid_argument&)
         {
             child = std::make_shared<UnaryNode>(symbol);
         }
