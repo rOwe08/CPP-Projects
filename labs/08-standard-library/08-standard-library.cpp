@@ -28,55 +28,70 @@ std::vector<Person> generate_people()
 	};
 }
 
-
 int main()
 {
 	auto people = generate_people();
 
 	// Count number of people with negative money.
-	// std::count, std::cout_if
-	size_t count = 0; // TODO
+	// std::count, std::count_if
+	size_t count = 0;
+	count = std::count_if(people.begin(), people.end(), [](const Person& p) { return p.money < 0; });
 	std::cout << "People with negative money (2): " << count << std::endl;
+	std::cout << std::endl;
 
 	// Find person with positive money after someone with negative money.
 	// std::find, std::find_if, std::find_if_not, functor
-	// TODO
 	auto result = people.end();
+
+	result = std::adjacent_find(people.begin(), people.end(),
+		[](const Person& a, const Person& b) { return a.money < 0 && b.money > 0; });
+
+	if (result != people.end())
+	{
+		result++;
+	}
 	if (result != people.end())
 	{
 		std::cout << "Person found (Brut): " << result->name << std::endl;
 	}
+	std::cout << std::endl;
 
-	std::vector<Person> vip;
 	// Copy people with more then 1000 money to vip list.
 	// std::copy, std::copy_if, std::back_inserter
-	// TODO
+	std::vector<Person> vip;
+	std::copy_if(people.begin(), people.end(), std::back_inserter(vip), [](const Person& p) { return p.money > 1000; });
 	std::cout << "VIP count (1): " << vip.size() << std::endl;
+	std::cout << std::endl;
 
 	// Sort people by money.
 	// std::sort
-	// TODO
+	std::sort(people.begin(), people.end(), [](const Person& a, const Person& b) { return a.money > b.money; });
 
 	// Print name of every person without using for-cycle.
 	// std::for_each, std::for_each_n
 	std::cout << "People (Ailish, Brut, Nicolas, Larcel):" << std::endl;
-	// TODO
+	std::for_each(people.begin(), people.end(), [](const Person& p) { std::cout << p.name << " "; });
+	std::cout << std::endl << std::endl;
 
 	// Remove inactive people from the peoples.
 	// std::remove, std::remove_if, people.erase	
-	// TODO
+	people.erase(std::remove_if(people.begin(), people.end(), [](const Person& p) { return !p.active; }), people.end());
 
 	// Print all remaining people.
 	std::cout << "Active people (Ailish, Brut):" << std::endl;
 	for (auto&& person : people)
 	{
-		std::cout << "  " << person.name << std::endl;
+		std::cout << person.name << " ";
 	}
+
+	std::cout << std::endl;
 
 	// Create list of positions.
 	// std::transform, std::back_inserter
 	std::vector<Position> positions;
-	// TODO
+	std::transform(people.begin(), people.end(), std::back_inserter(positions),
+		[](const Person& p) { return p.position; });
+	std::cout << std::endl;
 
 	// Print positions.
 	std::cout << "Positions (0:0, 12:18):" << std::endl;
@@ -84,5 +99,4 @@ int main()
 	{
 		std::cout << std::format("  {}:{}", position.x, position.y) << std::endl;
 	}
-
 }
