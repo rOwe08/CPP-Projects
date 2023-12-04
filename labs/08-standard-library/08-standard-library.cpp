@@ -1,3 +1,10 @@
+// Name of the file: 08-standard-library.cpp 
+// Name of the programmer: Igor Minenko
+// Course: Programming in C++ NPRG041
+// 
+// Program's purpose:
+// Using of various C++ standard library algorithms to manipulate and query a collection of Person objects.
+
 #include <iostream>
 #include <algorithm>
 #include <string>

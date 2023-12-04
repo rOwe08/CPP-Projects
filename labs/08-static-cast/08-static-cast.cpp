@@ -1,3 +1,10 @@
+// Name of the file: 08-static-cast.cpp 
+// Name of the programmer: Igor Minenko
+// Course: Programming in C++ NPRG041
+// 
+// Program's purpose:
+// Using of static_cast for type conversion of pointers within a class hierarchy in C++
+
 #include <iostream>
 #include <algorithm>
 #include <string>
