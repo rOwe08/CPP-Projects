@@ -7,7 +7,7 @@ public class SimplexNoise : ModuleRules
 	public SimplexNoise(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Landscape" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
