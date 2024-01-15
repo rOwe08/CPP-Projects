@@ -1150,3 +1150,33 @@ BUILD FAILED
 [2024.01.15-18.04.37:443][721]AssetCheck: New page: Asset Save: Main
 [2024.01.15-18.04.37:443][721]LogContentValidation: Display: Validating /Script/Engine.World /Game/Main.Main
 [2024.01.15-18.04.41:799][ 15]LogDerivedDataCache: C:/Users/User1/AppData/Local/UnrealEngine/Common/DerivedDataCache: Maintenance finished in +00:00:03.107 and deleted 0 files with total size 0 MiB and 0 empty folders. Scanned 2114 files in 2895 folders with total size 78 MiB.
+[2024.01.15-18.06.11:606][204]LogSlate: Took 0.010842 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-BoldCondensed.ttf' (158K)
+[2024.01.15-18.07.00:761][326]Running D:/Unreal Engine 5/UE_5.3/Engine/Build/BatchFiles/Build.bat  -projectfiles -project="D:/School/Gitlab/ProgrammingCPP/minenkoi/project/src/SimplexNoise/SimplexNoise.uproject" -game -rocket -progress
+[2024.01.15-18.07.00:881][326]Using bundled DotNet SDK version: 6.0.302
+[2024.01.15-18.07.00:881][326]Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" -projectfiles -project="D:/School/Gitlab/ProgrammingCPP/minenkoi/project/src/SimplexNoise/SimplexNoise.uproject" -game -rocket -progress
+[2024.01.15-18.07.01:484][326]Log file: C:\Users\User1\AppData\Local\UnrealBuildTool\Log_GPF.txt
+[2024.01.15-18.07.02:088][326]
+[2024.01.15-18.07.02:088][326]Some Platforms were skipped due to invalid SDK setup: IOS, Android, Linux, LinuxArm64.
+[2024.01.15-18.07.02:088][326]See the log file for detailed information
+[2024.01.15-18.07.02:088][326]
+[2024.01.15-18.07.02:088][326]
+[2024.01.15-18.07.02:088][326]Generating VisualStudio project files:
+[2024.01.15-18.07.02:088][326]Discovering modules, targets and source code for project...
+[2024.01.15-18.07.05:107][326]Binding IntelliSense data...
+[2024.01.15-18.07.30:382][326]Binding IntelliSense data... 75%
+[2024.01.15-18.07.30:383][326]Binding IntelliSense data... 100%
+[2024.01.15-18.07.30:383][326]Creating common properties file...
+[2024.01.15-18.07.30:383][326]Creating common properties file... 0%
+[2024.01.15-18.07.30:383][326]Writing project files...
+[2024.01.15-18.07.36:347][326]Writing project files... 100%
+[2024.01.15-18.07.36:347][326]
+[2024.01.15-18.07.36:347][326]Generating QueryTargets data for editor...
+[2024.01.15-18.07.36:660][326]LogLiveCoding: Display: Starting Live Coding compile.
+[2024.01.15-18.07.37:450][326]LogVSAccessor: Warning: Couldn't goto line number '1' in 'D:/School/Gitlab/ProgrammingCPP/minenkoi/project/src/SimplexNoise/Source/SimplexNoise/Public/TerrainManager.h'.
+[2024.01.15-18.07.37:450][326]LogVSAccessor: Warning: Couldn't open file 'D:/School/Gitlab/ProgrammingCPP/minenkoi/project/src/SimplexNoise/Source/SimplexNoise/Private/TerrainManager.cpp'.
+[2024.01.15-18.07.37:450][326]LogSlate: Window 'Add C++ Class' being destroyed
+[2024.01.15-18.09.42:145][759]LogLiveCoding: Display:    Creating library D:\School\Gitlab\ProgrammingCPP\minenkoi\project\src\SimplexNoise\Binaries\Win64\UnrealEditor-SimplexNoise.patch_0.lib and object D:\School\Gitlab\ProgrammingCPP\minenkoi\project\src\SimplexNoise\Binaries\Win64\UnrealEditor-SimplexNoise.patch_0.exp
+[2024.01.15-18.09.42:349][760]LogClass: Could not find existing package /Script/SimplexNoise for reload of class TerrainManager, assuming a new package.
+[2024.01.15-18.09.42:563][760]LogUObjectHash: Compacting FUObjectHashTables data took   1.03ms
+[2024.01.15-18.09.42:686][761]Display: Reload/Re-instancing Complete: 1 package new, 1 class new
+[2024.01.15-18.09.42:686][761]LogLiveCoding: Warning: Live coding succeeded, data type changes may cause packaging to fail if assets reference the new or updated data types
