@@ -12,9 +12,9 @@ SimplexNoiseConfig::~SimplexNoiseConfig()
 }
 
 //Just random values for now
-float SimplexNoiseConfig::Scale = 100.0f;
-int SimplexNoiseConfig::Octaves = 1;
+float SimplexNoiseConfig::Scale = 50.0f;
+int SimplexNoiseConfig::Octaves = 6;
 float SimplexNoiseConfig::Persistence = 0.5f;
 float SimplexNoiseConfig::Lacunarity = 2.0f;
+int SimplexNoiseConfig::Seed = 1337;
 FVector2D SimplexNoiseConfig::Offset = FVector2D(0.0f, 0.0f);
-int SimplexNoiseConfig::Seed = 1337;  

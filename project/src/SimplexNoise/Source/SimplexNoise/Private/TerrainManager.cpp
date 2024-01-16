@@ -16,36 +16,15 @@ ATerrainManager::ATerrainManager()
 // Called when the game starts or when spawned
 void ATerrainManager::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-    AdjustLandscapeSize();
+    SimplexNoiseGenerateLandscape();
 }
 
 // Called every frame
 void ATerrainManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-}
-
-void ATerrainManager::AdjustLandscapeSize()
-{
-    ALandscape* Landscape = FindLandscape();
-    if (Landscape)
-    {
-        FVector NewScale = FVector(
-            SimplexNoiseConfig::Scale,
-            SimplexNoiseConfig::Scale,
-            SimplexNoiseConfig::Scale
-        );
-
-        Landscape->SetActorScale3D(NewScale);
-
-        if (GEngine)
-        {
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Landscape scaled to: %s"), *NewScale.ToString()));
-        }
-    }
 }
 
 ALandscape* ATerrainManager::FindLandscape()
@@ -64,5 +43,34 @@ ALandscape* ATerrainManager::FindLandscape()
     }
     return nullptr;
 }
+
+//TArray<float> ATerrainManager::GenerateNoiseMap(int MapWidth, int MapHeight)
+//{
+//    // TODO: Simplex Noise generation
+//}
+
+void ATerrainManager::ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<float>& NoiseMap)
+{
+    // TODO
+}
+
+void ATerrainManager::SimplexNoiseGenerateLandscape()
+{
+    ALandscape* Landscape = FindLandscape();
+
+    if (!Landscape)
+    {
+        if (GEngine)
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No Landscape found. Cannot generate terrain."));
+        }
+        return;
+    }
+
+    //TArray<float> NoiseMap = GenerateNoiseMap(NoiseMapWidth, NoiseMapHeight);
+
+    //ApplyNoiseToLandscape(Landscape, NoiseMap);
+}
+
 
 

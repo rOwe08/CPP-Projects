@@ -24,6 +24,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void AdjustLandscapeSize();
 	ALandscape* FindLandscape();
+	TArray<float> GenerateNoiseMap(int MapWidth, int MapHeight);
+	void ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<float>& NoiseMap);
+	void SimplexNoiseGenerateLandscape();
 };

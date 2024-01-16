@@ -18,8 +18,8 @@ public:
     static int Octaves;
     static float Persistence;
     static float Lacunarity;
+    static int Seed;
     static FVector2D Offset;
-    static int Seed; 
 
     static void SetNoiseParameters(float NewScale, int NewOctaves, float NewPersistence, float NewLacunarity, FVector2D NewOffset, int NewSeed)
     {
