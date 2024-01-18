@@ -20,6 +20,7 @@ public:
     static float Lacunarity;
     static int Seed;
     static FVector2D Offset;
+    //const std::array<FVector2D, 8> Gradients;
 
     static void SetNoiseParameters(float NewScale, int NewOctaves, float NewPersistence, float NewLacunarity, FVector2D NewOffset, int NewSeed)
     {

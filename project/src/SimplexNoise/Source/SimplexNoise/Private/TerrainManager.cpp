@@ -54,6 +54,15 @@ void ATerrainManager::ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<
     // TODO
 }
 
+TArray<float> ATerrainManager::GenerateNoiseMap(int MapWidth, int MapHeight)
+{
+    TArray<float> NoiseMap;
+    NoiseMap.Init(0.0f, MapWidth * MapHeight);
+
+    // TODO:
+    return NoiseMap;
+}
+
 void ATerrainManager::SimplexNoiseGenerateLandscape()
 {
     ALandscape* Landscape = FindLandscape();
