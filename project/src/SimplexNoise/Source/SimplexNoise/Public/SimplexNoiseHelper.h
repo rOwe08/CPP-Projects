@@ -8,8 +8,8 @@
 class SimplexNoiseHelper
 {
 public:
-    static float Generate(float x, float y);
-    static TArray<float> GenerateNoiseMap(int Width, int Height, const SimplexNoiseConfig& Config);
+    static float GenerateNormalizedNoiseValue(float x, float y);
+    static TArray<float> GenerateNoiseMap(const SimplexNoiseConfig& Config);
 private:
     static float SimplexNoise(float x, float y);
 };

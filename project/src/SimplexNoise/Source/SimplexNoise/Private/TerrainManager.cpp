@@ -2,14 +2,16 @@
 
 #include "TerrainManager.h"
 #include "SimplexNoiseConfig.h"
+#include "SimplexNoiseHelper.h"
 #include "Landscape.h"
+#include "LandscapeEdit.h"
 #include "EngineUtils.h"
 
 // Sets default values
 ATerrainManager::ATerrainManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    PrimaryActorTick.bCanEverTick = true;
 
 }
 
@@ -24,7 +26,7 @@ void ATerrainManager::BeginPlay()
 // Called every frame
 void ATerrainManager::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 }
 
 ALandscape* ATerrainManager::FindLandscape()
@@ -44,24 +46,60 @@ ALandscape* ATerrainManager::FindLandscape()
     return nullptr;
 }
 
-//TArray<float> ATerrainManager::GenerateNoiseMap(int MapWidth, int MapHeight)
-//{
-//    // TODO: Simplex Noise generation
-//}
-
 void ATerrainManager::ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<float>& NoiseMap)
 {
-    // TODO
+    if (!Landscape) return;
+
+    FLandscapeEditDataInterface LandscapeEditData(Landscape->GetLandscapeInfo());
+    TArray<ULandscapeComponent*> LandscapeComponents;
+    Landscape->GetComponents(LandscapeComponents);
+
+    for (ULandscapeComponent* Component : LandscapeComponents)
+    {
+        FIntPoint ComponentOrigin = Component->GetSectionBase();
+        int32 ComponentSize = Component->ComponentSizeQuads + 1;
+
+        TArray<uint16> HeightData;
+        HeightData.SetNumUninitialized(ComponentSize * ComponentSize);
+
+        for (int32 Y = 0; Y < ComponentSize; ++Y)
+        {
+            for (int32 X = 0; X < ComponentSize; ++X)
+            {
+                int32 NoiseMapIndex = (ComponentOrigin.Y + Y) * ComponentSize + (ComponentOrigin.X + X);
+                float NoiseValue = NoiseMap[NoiseMapIndex];
+                uint16 Height = FMath::Clamp<uint16>(FMath::RoundToInt(NoiseValue * 65535.0f), 0, 65535);
+
+                UE_LOG(LogTemp, Warning, TEXT("Noise Value at (%d): %f"), Y * ComponentSize + X, Height);
+                    
+                HeightData[Y * ComponentSize + X] = Height;
+            }
+        }
+
+        UE_LOG(LogTemp, Warning, TEXT("THE END"));
+
+        LandscapeEditData.SetHeightData(
+            ComponentOrigin.X, ComponentOrigin.Y,
+            ComponentOrigin.X + ComponentSize - 1, ComponentOrigin.Y + ComponentSize - 1,
+            HeightData.GetData(),
+            0, // InStride
+            true, // InCalcNormals
+            nullptr, // InNormalData
+            nullptr, // InHeightAlphaBlendData
+            nullptr, // InHeightRaiseLowerData
+            false, // InCreateComponents
+            nullptr, // InHeightmap
+            nullptr, // InXYOffsetmapTexture
+            true, // InUpdateBounds
+            true, // InUpdateCollision
+            false // InGenerateMips
+        );
+    }
+
+    Landscape->MarkPackageDirty();
+    Landscape->PostEditChange();
 }
 
-TArray<float> ATerrainManager::GenerateNoiseMap(int MapWidth, int MapHeight)
-{
-    TArray<float> NoiseMap;
-    NoiseMap.Init(0.0f, MapWidth * MapHeight);
-
-    // TODO:
-    return NoiseMap;
-}
 
 void ATerrainManager::SimplexNoiseGenerateLandscape()
 {
@@ -76,10 +114,6 @@ void ATerrainManager::SimplexNoiseGenerateLandscape()
         return;
     }
 
-    //TArray<float> NoiseMap = GenerateNoiseMap(NoiseMapWidth, NoiseMapHeight);
-
-    //ApplyNoiseToLandscape(Landscape, NoiseMap);
+    TArray<float> NoiseMap = SimplexNoiseHelper::GenerateNoiseMap(SimplexNoiseConfig());
+    ApplyNoiseToLandscape(Landscape, NoiseMap);
 }
-
-
-

@@ -14,6 +14,9 @@ public:
 	~SimplexNoiseConfig();
 
 public:
+    static int MapWidth;
+    static int MapHeight;
+
     static float Scale;
     static int Octaves;
     static float Persistence;

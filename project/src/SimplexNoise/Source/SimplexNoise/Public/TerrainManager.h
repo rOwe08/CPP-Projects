@@ -25,7 +25,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	ALandscape* FindLandscape();
-	TArray<float> GenerateNoiseMap(int MapWidth, int MapHeight);
 	void ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<float>& NoiseMap);
 	void SimplexNoiseGenerateLandscape();
 };
