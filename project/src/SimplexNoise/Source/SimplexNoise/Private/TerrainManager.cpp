@@ -20,7 +20,8 @@ void ATerrainManager::BeginPlay()
 {
     Super::BeginPlay();
 
-    SimplexNoiseGenerateLandscape();
+    ApplyConfigToLandscape();
+    //SimplexNoiseGenerateLandscape();
 }
 
 // Called every frame
@@ -44,6 +45,15 @@ ALandscape* ATerrainManager::FindLandscape()
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No Landscape found."));
     }
     return nullptr;
+}
+
+void ATerrainManager::ApplyConfigToLandscape()
+{
+    ALandscape* Landscape = FindLandscape();
+    if (!Landscape) return;
+
+    Landscape->SetActorScale3D(FVector(SimplexNoiseConfig::Scale, SimplexNoiseConfig::Scale, 1.0f));
+
 }
 
 void ATerrainManager::ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<float>& NoiseMap)

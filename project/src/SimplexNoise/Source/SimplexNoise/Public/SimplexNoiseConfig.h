@@ -25,13 +25,13 @@ public:
     static FVector2D Offset;
     //const std::array<FVector2D, 8> Gradients;
 
-    static void SetNoiseParameters(float NewScale, int NewOctaves, float NewPersistence, float NewLacunarity, FVector2D NewOffset, int NewSeed)
-    {
-        Scale = NewScale;
-        Octaves = NewOctaves;
-        Persistence = NewPersistence;
-        Lacunarity = NewLacunarity;
-        Offset = NewOffset;
-        Seed = NewSeed;
-    }
+    //static void SetNoiseParameters(float NewScale, int NewOctaves, float NewPersistence, float NewLacunarity, FVector2D NewOffset, int NewSeed)
+    //{
+    //    Scale = NewScale;
+    //    Octaves = NewOctaves;
+    //    Persistence = NewPersistence;
+    //    Lacunarity = NewLacunarity;
+    //    Offset = NewOffset;
+    //    Seed = NewSeed;
+    //}
 };

@@ -11,10 +11,8 @@ SimplexNoiseConfig::~SimplexNoiseConfig()
 }
 
 //Just random values for now
-
-
-int SimplexNoiseConfig::MapWidth = 100;
-int SimplexNoiseConfig::MapHeight = 100;
+int SimplexNoiseConfig::MapWidth = 1000;
+int SimplexNoiseConfig::MapHeight = 1000;
 
 float SimplexNoiseConfig::Scale = 100.0f;
 int SimplexNoiseConfig::Octaves = 6;
