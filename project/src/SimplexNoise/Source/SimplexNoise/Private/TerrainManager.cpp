@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TerrainManager.h"
 #include "SimplexNoiseConfig.h"
@@ -68,15 +68,16 @@ void ATerrainManager::ApplyNoiseToLandscape(ALandscape* Landscape, const TArray<
             {
                 int32 NoiseMapIndex = (ComponentOrigin.Y + Y) * ComponentSize + (ComponentOrigin.X + X);
                 float NoiseValue = NoiseMap[NoiseMapIndex];
-                uint16 Height = FMath::Clamp<uint16>(FMath::RoundToInt(NoiseValue * 65535.0f), 0, 65535);
-
+                uint16 Height = FMath::Clamp<uint16>(FMath::RoundToInt(NoiseValue * 300), 0, 65535);
                 UE_LOG(LogTemp, Warning, TEXT("Noise Value at (%d): %f"), Y * ComponentSize + X, Height);
                     
                 HeightData[Y * ComponentSize + X] = Height;
+                UE_LOG(LogTemp, Warning, TEXT("Noise atааа (%d)"), HeightData[Y * ComponentSize + X]);
             }
         }
 
         UE_LOG(LogTemp, Warning, TEXT("THE END"));
+        UE_LOG(LogTemp, Warning, TEXT("Component was (%d)"), Component);
 
         LandscapeEditData.SetHeightData(
             ComponentOrigin.X, ComponentOrigin.Y,
