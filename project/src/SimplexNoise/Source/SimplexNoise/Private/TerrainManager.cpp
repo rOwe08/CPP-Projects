@@ -6,7 +6,6 @@
 #include "ProceduralMeshComponent.h"
 #include "EngineUtils.h"
 
-
 // Sets default values
 ATerrainManager::ATerrainManager()
 {
@@ -22,6 +21,8 @@ void ATerrainManager::BeginPlay()
 {
     Super::BeginPlay();
 
+    CreateVertices();
+    CreateTriangles();
     ApplyConfigToLandscape();
     SimplexNoiseGenerateLandscape();
 }
@@ -36,6 +37,43 @@ void ATerrainManager::Tick(float DeltaTime)
 void ATerrainManager::ApplyConfigToLandscape()
 {
 
+}
+
+void ATerrainManager::CreateVertices()
+{
+    float Scale = 100.0f;
+
+    for (int X = 0; X <= XSize; ++X) 
+    {
+        for (int Y = 0; Y <= YSize; ++Y) 
+        {
+            Vertices.Add(FVector( X * Scale, Y * Scale, 0));
+
+            DrawDebugSphere(GetWorld(), FVector(X * Scale, Y * Scale, 0), 25.0f, 16, FColor::Red, true, -1.0f, 0U, 0.0f);
+        }
+    }
+}
+
+void ATerrainManager::CreateTriangles()
+{
+    int Vertex = 0;
+
+    for (int i = 0; i < XSize; ++i) 
+    {
+        for (int j = 0; j < YSize; ++j)
+        {
+            Triangles.Add(Vertex);
+            Triangles.Add(Vertex + 1);
+            Triangles.Add(YSize + Vertex + 1);
+
+            Triangles.Add(Vertex + 1);
+            Triangles.Add(Vertex + YSize + 2);
+            Triangles.Add(Vertex + YSize + 1);
+
+            ++Vertex;
+        }
+        ++Vertex;
+    }
 }
 
 void ATerrainManager::ApplyNoiseToLandscape(const TArray<float>& NoiseMap)

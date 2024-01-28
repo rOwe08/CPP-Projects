@@ -16,16 +16,15 @@ public:
 	// Sets default values for this actor's properties
 	ATerrainManager();
 
+	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0))
+	int XSize = 0;
+
+	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0))
+	int YSize = 0;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true))
-	TArray<FVector> Vertices;
-
-	UPROPERTY(EditAnywhere)
-	TArray<int32> Triangles;
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -35,5 +34,9 @@ public:
 	void SimplexNoiseGenerateLandscape();
 private:
 	UProceduralMeshComponent* ProceduralMesh;
+	TArray<FVector> Vertices;
+	TArray<int32> Triangles;
 
+	void CreateVertices();
+	void CreateTriangles();
 };
