@@ -11,29 +11,6 @@ float SimplexNoiseHelper::GenerateNormalizedNoiseValue(float x, float y)
     return (rawNoise + 1.0f) / 2.0f;
 }
 
-TArray<float> SimplexNoiseHelper::GenerateNoiseMap(const SimplexNoiseConfig& Config)
+void SimplexNoiseHelper::GenerateNoiseMap(const SimplexNoiseConfig& Config)
 {
-    TArray<float> NoiseMap;
-    NoiseMap.Init(0.0f, Config.MapWidth * Config.MapHeight);
-
-    for (int y = 0; y < Config.MapHeight; y++)
-    {
-        for (int x = 0; x < Config.MapWidth; x++)
-        {
-            float noiseValue = GenerateNormalizedNoiseValue(x * Config.Scale + Config.Offset.X, y * Config.Scale + Config.Offset.Y);
-
-            NoiseMap[y * Config.MapWidth + x] = noiseValue;
-        }
-    }
-
-    for (int y = 0; y < Config.MapHeight; y++)
-    {
-        for (int x = 0; x < Config.MapWidth; x++)
-        {
-            float noiseValue = NoiseMap[y * Config.MapWidth + x];
-            UE_LOG(LogTemp, Warning, TEXT("Noise Value at (%d, %d): %f"), x, y, noiseValue);
-        }
-    }
-
-    return NoiseMap;
 }

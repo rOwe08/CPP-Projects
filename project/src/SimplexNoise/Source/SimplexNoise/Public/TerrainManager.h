@@ -16,11 +16,11 @@ public:
 	// Sets default values for this actor's properties
 	ATerrainManager();
 
-	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0))
-	int XSize = 0;
+	UPROPERTY(EditAnywhere)
+	TArray<FVector2D> UV0;
 
-	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0))
-	int YSize = 0;
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface* TerrainMaterial;
 
 protected:
 	// Called when the game starts or when spawned

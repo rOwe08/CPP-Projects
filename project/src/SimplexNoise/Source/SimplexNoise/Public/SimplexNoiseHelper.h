@@ -9,7 +9,7 @@ class SimplexNoiseHelper
 {
 public:
     static float GenerateNormalizedNoiseValue(float x, float y);
-    static TArray<float> GenerateNoiseMap(const SimplexNoiseConfig& Config);
+    static void GenerateNoiseMap(const SimplexNoiseConfig& Config);
 private:
     static float SimplexNoise(float x, float y);
 //public:
