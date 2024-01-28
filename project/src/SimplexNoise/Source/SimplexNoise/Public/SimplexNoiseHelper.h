@@ -12,4 +12,7 @@ public:
     static TArray<float> GenerateNoiseMap(const SimplexNoiseConfig& Config);
 private:
     static float SimplexNoise(float x, float y);
+//public:
+//    static TArray<FVector> Vertices;
+//    static TArray<int32> Triangles;
 };
