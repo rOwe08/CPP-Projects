@@ -11,10 +11,12 @@ SimplexNoiseConfig::~SimplexNoiseConfig()
 }
 
 //Just random values for now
-int SimplexNoiseConfig::XSize = 5;
-int SimplexNoiseConfig::YSize = 10;
+int SimplexNoiseConfig::XSize = 20;
+int SimplexNoiseConfig::YSize = 20;
 
 float SimplexNoiseConfig::Scale = 100.0f;
+float SimplexNoiseConfig::UVScale = 10.0f;
+
 int SimplexNoiseConfig::Octaves = 6;
 float SimplexNoiseConfig::Persistence = 0.5f;
 float SimplexNoiseConfig::Lacunarity = 2.0f;

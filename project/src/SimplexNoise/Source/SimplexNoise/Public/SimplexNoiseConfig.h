@@ -18,6 +18,7 @@ public:
     static int YSize;
 
     static float Scale;
+    static float UVScale;
     static int Octaves;
     static float Persistence;
     static float Lacunarity;

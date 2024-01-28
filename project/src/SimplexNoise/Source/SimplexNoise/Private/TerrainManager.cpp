@@ -41,13 +41,17 @@ void ATerrainManager::ApplyConfigToLandscape()
 
 void ATerrainManager::CreateVertices()
 {
+    double zMax = 100;
+    double zMin = -100;
+
     for (int X = 0; X <= SimplexNoiseConfig::XSize; ++X)
     {
         for (int Y = 0; Y <= SimplexNoiseConfig::YSize; ++Y)
         {
-            Vertices.Add(FVector( X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, 0));
+            Vertices.Add(FVector( X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, FMath::RandRange(zMin, zMax)));
+            UV0.Add(FVector2D(X * SimplexNoiseConfig::UVScale, Y * SimplexNoiseConfig::UVScale));
 
-            DrawDebugSphere(GetWorld(), FVector(X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, 0), 25.0f, 16, FColor::Red, true, -1.0f, 0U, 0.0f);
+            //DrawDebugSphere(GetWorld(), FVector(X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, 0), 25.0f, 16, FColor::Red, true, -1.0f, 0U, 0.0f);
         }
     }
 }
