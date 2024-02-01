@@ -33,7 +33,6 @@ void ATerrainManager::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-
 void ATerrainManager::ApplyConfigToLandscape()
 {
 
@@ -48,10 +47,12 @@ void ATerrainManager::CreateVertices()
     {
         for (int Y = 0; Y <= SimplexNoiseConfig::YSize; ++Y)
         {
-            Vertices.Add(FVector( X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, FMath::RandRange(zMin, zMax)));
+            double zValue = FMath::RandRange(zMin, zMax);
+
+            Vertices.Add(FVector( X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, zValue));
             UV0.Add(FVector2D(X * SimplexNoiseConfig::UVScale, Y * SimplexNoiseConfig::UVScale));
 
-            //DrawDebugSphere(GetWorld(), FVector(X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, 0), 25.0f, 16, FColor::Red, true, -1.0f, 0U, 0.0f);
+            DrawDebugSphere(GetWorld(), FVector(X * SimplexNoiseConfig::Scale, Y * SimplexNoiseConfig::Scale, zValue), 25.0f, 16, FColor::Red, true, -1.0f, 0U, 0.0f);
         }
     }
 }
@@ -82,7 +83,6 @@ void ATerrainManager::ApplyNoiseToLandscape(const TArray<float>& NoiseMap)
 {
 
 }
-
 
 void ATerrainManager::SimplexNoiseGenerateLandscape()
 {
